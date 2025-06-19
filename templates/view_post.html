@@ -13,10 +13,12 @@
                         Автор: {{ post.author.username }} | {{ post.created_at.strftime('%d.%m.%Y %H:%M') }}
                     </small>
                     <div>
-                        <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-sm btn-warning">Редагувати</a>
-                        <form method="POST" action="{{ url_for('delete_post', id=post.id) }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені?')">Видалити</button>
-                        </form>
+                        {% if post.user_id == session.current_user.id or session.current_user.is_admin %}
+                            <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-sm btn-warning">Редагувати</a>
+                            <form method="POST" action="{{ url_for('delete_post', id=post.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені?')">Видалити</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -28,29 +30,14 @@
                 <h5>Додати коментар</h5>
             </div>
             <div class="card-body">
-                {% if users %}
-                    <form method="POST" action="{{ url_for('create_comment', post_id=post.id) }}">
-                        <div class="mb-3">
-                            <label for="user_id" class="form-label">Автор коментаря</label>
-                            <select class="form-control" id="user_id" name="user_id" required>
-                                <option value="">Виберіть автора</option>
-                                {% for user in users %}
-                                    <option value="{{ user.id }}">{{ user.username }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+                <form method="POST" action="{{ url_for('create_comment', post_id=post.id) }}">
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Коментар</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required placeholder="Введіть ваш коментар..."></textarea>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Коментар</label>
-                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Додати коментар</button>
-                    </form>
-                {% else %}
-                    <p class="text-muted">Для додавання коментарів потрібно створити користувача.</p>
-                    <a href="{{ url_for('create_user') }}" class="btn btn-primary">Створити користувача</a>
-                {% endif %}
+                    <button type="submit" class="btn btn-primary">Додати коментар</button>
+                </form>
             </div>
         </div>
 
@@ -68,11 +55,13 @@
                                 <small class="text-muted">
                                     {{ comment.author.username }} | {{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}
                                 </small>
-                                <form method="POST" action="{{ url_for('delete_comment', id=comment.id) }}" style="display: inline;">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Видалити коментар?')">
-                                        Видалити
-                                    </button>
-                                </form>
+                                {% if comment.user_id == session.current_user.id or session.current_user.is_admin %}
+                                    <form method="POST" action="{{ url_for('delete_comment', id=comment.id) }}" style="display: inline;">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Видалити коментар?')">
+                                            Видалити
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
