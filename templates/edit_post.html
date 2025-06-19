@@ -1,37 +1,43 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <h2>Редагувати пост</h2>
+  <div class="col-md-8 offset-md-2">
+    <h2>Редагувати пост</h2>
 
-        <form method="POST">
-            <div class="mb-3">
-                <label for="title" class="form-label">Заголовок</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
-            </div>
+    <form method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Заголовок</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          value="{{ post.title }}"
+          required
+        />
+      </div>
 
-            <div class="mb-3">
-                <label for="content" class="form-label">Зміст</label>
-                <textarea class="form-control" id="content" name="content" rows="6" required>{{ post.content }}</textarea>
-            </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">Зміст</label>
+        <textarea
+          class="form-control"
+          id="content"
+          name="content"
+          rows="6"
+          required
+        >
+{{ post.content }}</textarea
+        >
+      </div>
 
-            <div class="mb-3">
-                <label for="user_id" class="form-label">Автор</label>
-                <select class="form-control" id="user_id" name="user_id" required>
-                    {% for user in users %}
-                        <option value="{{ user.id }}" {% if user.id == post.user_id %}selected{% endif %}>
-                            {{ user.username }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Оновити</button>
-                <a href="{{ url_for('posts') }}" class="btn btn-secondary">Скасувати</a>
-            </div>
-        </form>
-    </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Оновити</button>
+        <a
+          href="{{ url_for('view_post', id=post.id) }}"
+          class="btn btn-secondary"
+          >Скасувати</a
+        >
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

@@ -1,53 +1,62 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="row">
-    <div class="col-md-12">
-        <h1>Вітаємо в Flask CRUD додатку!</h1>
-        <p class="lead">Простий блог з користувачами, постами та коментарями.</p>
-    </div>
+  <div class="col-md-12">
+    <h1>Вітаємо в Flask CRUD додатку!</h1>
+    <p class="lead">Простий блог з користувачами, постами та коментарями.</p>
+  </div>
 </div>
 
 <div class="row mt-4">
-    <div class="col-md-6">
-        <h3>Останні користувачі</h3>
-        <div class="card">
-            <div class="card-body">
-                {% if users %}
-                    <ul class="list-group list-group-flush">
-                        {% for user in users[-5:] %}
-                            <li class="list-group-item">
-                                <strong>{{ user.username }}</strong> - {{ user.email }}
-                                <small class="text-muted d-block">{{ user.created_at.strftime('%d.%m.%Y %H:%M') }}</small>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>Користувачів ще немає.</p>
-                {% endif %}
-                <a href="{{ url_for('users') }}" class="btn btn-primary mt-2">Всі користувачі</a>
-            </div>
-        </div>
+  <div class="col-md-6">
+    <h3>Останні користувачі</h3>
+    <div class="card">
+      <div class="card-body">
+        {% if users %}
+        <ul class="list-group list-group-flush">
+          {% for user in users[-5:] %}
+          <li class="list-group-item">
+            <strong>{{ user.username }}</strong> - {{ user.email }}
+            <small class="text-muted d-block"
+              >{{ user.created_at.strftime('%d.%m.%Y %H:%M') }}</small
+            >
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>Користувачів ще немає.</p>
+        {% endif %}
+        <a href="{{ url_for('users') }}" class="btn btn-primary mt-2"
+          >Всі користувачі</a
+        >
+      </div>
     </div>
+  </div>
 
-    <div class="col-md-6">
-        <h3>Останні пости</h3>
-        <div class="card">
-            <div class="card-body">
-                {% if posts %}
-                    {% for post in posts[-5:] %}
-                        <div class="mb-3">
-                            <h5><a href="{{ url_for('view_post', id=post.id) }}">{{ post.title }}</a></h5>
-                            <p class="text-muted">{{ post.content[:100] }}...</p>
-                            <small class="text-muted">Автор: {{ post.author.username }} | {{ post.created_at.strftime('%d.%m.%Y') }}</small>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Постів ще немає.</p>
-                {% endif %}
-                <a href="{{ url_for('posts') }}" class="btn btn-primary mt-2">Всі пости</a>
-            </div>
+  <div class="col-md-6">
+    <h3>Останні пости</h3>
+    <div class="card">
+      <div class="card-body">
+        {% if posts %} {% for post in posts[-5:] %}
+        <div class="mb-3">
+          <h5>
+            <a href="{{ url_for('view_post', id=post.id) }}"
+              >{{ post.title }}</a
+            >
+          </h5>
+          <p class="text-muted">{{ post.content[:100] }}...</p>
+          <small class="text-muted"
+            >Автор: {{ post.author.username }} | {{
+            post.created_at.strftime('%d.%m.%Y') }}</small
+          >
         </div>
+        {% endfor %} {% else %}
+        <p>Постів ще немає.</p>
+        {% endif %}
+        <a href="{{ url_for('posts') }}" class="btn btn-primary mt-2"
+          >Всі пости</a
+        >
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
