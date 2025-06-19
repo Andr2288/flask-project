@@ -6,9 +6,6 @@ from config import Config
 from models import db, User, Post, Comment
 from forms import LoginForm, RegistrationForm, PostForm, CommentForm, UserForm
 from api import init_api
-import asyncio
-import threading
-from aiohttp_server import main as aiohttp_main
 
 
 def create_app():
@@ -18,17 +15,17 @@ def create_app():
 
     # Ініціалізація розширень
     db.init_app(app)
-    csrf = CSRFProtect(app)
+
+    # Для навчального проекту можна відключити CSRF
+    # csrf = CSRFProtect(app)
+
     jwt = JWTManager(app)
     migrate = Migrate(app, db)
 
     # Ініціалізація API
     api = init_api(app)
 
-    # Виключення CSRF для API endpoints
-    csrf.exempt(api)
-
-    return app, csrf, jwt, migrate, api
+    return app, None, jwt, migrate, api
 
 
 app, csrf, jwt, migrate, api = create_app()
@@ -220,9 +217,10 @@ def api_docs():
 
 def start_aiohttp_server():
     """Запуск aiohttp сервера в окремому потоці"""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(aiohttp_main())
+    print("💡 Для запуску aiohttp сервера виконайте:")
+    print("   python aiohttp_server.py")
+    print("   або")
+    print("   python aiohttp_simple.py (без MySQL)")
 
 
 if __name__ == '__main__':

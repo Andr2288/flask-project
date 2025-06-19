@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h2>Створити пост (Flask-WTF)</h2>
+
+    <form method="POST">
+      <!-- {{ form.hidden_tag() }} -->
+
+      <div class="mb-3">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+        {% if form.title.errors %}
+          <div class="text-danger">
+            {% for error in form.title.errors %}
+              <small>{{ error }}</small>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control", rows="6") }}
+        {% if form.content.errors %}
+          <div class="text-danger">
+            {% for error in form.content.errors %}
+              <small>{{ error }}</small>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('posts') }}" class="btn btn-secondary">Скасувати</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
